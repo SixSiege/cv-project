@@ -2,6 +2,8 @@ runs
 rock-paper-scissors-14
 newTrained
 
+__pycache__/
+
 yolov*/  
 yolo*/  
 *.pt

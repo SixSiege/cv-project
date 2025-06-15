@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Camera Capture</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="camera-container">
+      <video id="camera" autoplay></video>
+      <span id="countdown"></span>
+    </div>
+    <p style="font-size: small;">
+      Tekan tombol "Mulai Game" untuk memulai. Hitung mundur akan muncul, dan
+      siapkan tangan mu
+    </p>
+    <button id="captureBtn" class="center-btn">Mulai Game</button>
+    <canvas
+      id="snapshot"
+      width="480"
+      height="360"
+      style="display: none"
+    ></canvas>
+    <img
+      id="photo"
+      alt="Captured Image"
+      style="display: none; margin-top: 10px"
+    />
+
+    <script>
+      const video = document.getElementById("camera");
+      const canvas = document.getElementById("snapshot");
+      const photo = document.getElementById("photo");
+      const captureBtn = document.getElementById("captureBtn");
+      const countdownEl = document.getElementById("countdown");
+
+      // Access webcam
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          video.srcObject = stream;
+        })
+        .catch((err) => {
+          alert("Could not access the camera.");
+        });
+
+      captureBtn.addEventListener("click", () => {
+        let countdown = 3;
+        countdownEl.textContent = countdown;
+        captureBtn.style.display = "none"; // Hide button
+        const interval = setInterval(() => {
+          countdown--;
+          if (countdown > 0) {
+            countdownEl.textContent = countdown;
+          } else {
+            clearInterval(interval);
+            countdownEl.textContent = "";
+            // Capture frame
+            canvas
+              .getContext("2d")
+              .drawImage(video, 0, 0, canvas.width, canvas.height);
+            photo.src = canvas.toDataURL("image/png");
+            captureBtn.style.display = "block"; // Show button again
+
+            fetch("/analyze", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: photo.src }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Create paragraph element if it doesn't exist
+                let resultElement = document.getElementById("result-text");
+                if (!resultElement) {
+                  resultElement = document.createElement("p");
+                  resultElement.id = "result-text";
+                  document.body.appendChild(resultElement);
+                }
+
+                if (!data.detected || data.detected.length === 0) {
+                  resultElement.textContent = "No objects detected.";
+                } else {
+                  resultElement.textContent = `You choose: ${JSON.stringify(
+                    data.detected[0]
+                  )} \nAI choose: ${JSON.stringify(
+                    data.ai_choice
+                  )} \n Result: ${data.result}`;
+                }
+                console.log(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

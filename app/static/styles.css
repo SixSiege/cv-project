@@ -1,0 +1,64 @@
+body {
+  padding: 5px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+p {
+  font-size: 1.2em;
+  color: #555;
+  line-height: 1.5;
+}
+
+.camera-container {
+  position: relative;
+  display: inline-block;
+}
+#camera {
+  display: block;
+  width: 100%;
+height: auto;
+}
+
+.center-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;           /* Distance from the bottom */
+    top: auto;              /* Remove top centering */
+    transform: translateX(-50%);
+    z-index: 2;
+    padding: 12px 24px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.center-btn:hover {
+    background-color: #3367d6;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.center-btn:active {
+    background-color: #2a56c6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+#countdown {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  color: red;
+  z-index: 3;
+}
