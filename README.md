@@ -21,3 +21,8 @@ Human player will start the playing session by pressing a button. A countdown wi
 - Finetuned a pretrained model YOLOv8s with 7k images of rock, paper, scissor
 - Successfully detected hand symbols on live cam, albeit moderate detection
 - Trained again with more images (15k+), produced more strong detection. Will using this model.
+
+### 75% Report
+- Implement a base code Flask for detecting and classifying image
+- Will implement new features
+- Will fix issue for delayed model initialization
