@@ -6,7 +6,7 @@ from ultralytics import YOLO  # Make sure ultralytics is installed
 
 model = YOLO('D:/Kuliah/CV/Project/cv-project/app/best.pt')  # Use your model path
 
-from flask import render_template
+from flask import request, jsonify, render_template, session
 
 from app import app
 
@@ -46,6 +46,9 @@ def analyze():
     else:
         detected.append("No objects detected")
 
+    if 'score' not in session:
+        session['score'] = {'user': 0, 'ai': 0, 'tie': 0}
+
     # A simple Scissors, Rock, Paper game logic
     user_choice = detected[0]
     if user_choice not in ['Scissors', 'Rock', 'Paper']:
@@ -53,11 +56,21 @@ def analyze():
     
     if user_choice == ai_choice:
         result = "It's a tie!"
+        session['score']['tie'] += 1
     elif (user_choice == 'Rock' and ai_choice == 'Scissors') or \
          (user_choice == 'Scissors' and ai_choice == 'Paper') or \
          (user_choice == 'Paper' and ai_choice == 'Rock'):
         result = "You win!"
+        session['score']['user'] += 1
     else:
         result = "You lose!"
+        session['score']['ai'] += 1
+        
+    session['score'] = dict(session['score'])
 
-    return jsonify({'detected': detected, 'ai_choice': ai_choice, 'result': result})
+    return jsonify({
+        'detected': detected, 
+        'ai_choice': ai_choice, 
+        'result': result, 
+        'score': session['score']
+    })

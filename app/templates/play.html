@@ -14,9 +14,12 @@
       <video id="camera" autoplay></video>
       <span id="countdown"></span>
     </div>
-    <p style="font-size: small;">
+    <div id="score-board"></div>
+    <!-- Add this line -->
+    <p style="font-size: small; padding: 0 20%">
       Tekan tombol "Mulai Game" untuk memulai. Hitung mundur akan muncul, dan
-      siapkan tangan mu
+      siapkan tangan mu. Pastikan jarak kamera cukup dekat untuk menangkap
+      gambar.
     </p>
     <button id="captureBtn" class="center-btn">Mulai Game</button>
     <canvas
@@ -90,6 +93,12 @@
                     data.ai_choice
                   )} \n Result: ${data.result}`;
                 }
+
+                let scoreBoard = document.getElementById("score-board");
+                if (data.score) {
+                  scoreBoard.textContent = `Score - You: ${data.score.user}, AI: ${data.score.ai}, Tie: ${data.score.tie}`;
+                }
+
                 console.log(data);
               })
               .catch((error) => {
