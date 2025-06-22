@@ -44,7 +44,7 @@ def analyze():
         ai_choice = random.choice(['Scissors', 'Rock', 'Paper'])
         detected.append(f"AI chose: {ai_choice}")
     else:
-        detected.append("No objects detected")
+        detected.append("Tidad ada objek terdeteksi.")
 
     if 'score' not in session:
         session['score'] = {'user': 0, 'ai': 0, 'tie': 0}
@@ -55,15 +55,15 @@ def analyze():
         return jsonify({'error': 'Invalid user choice. Please choose Scissors, Rock, or Paper.'}), 400
     
     if user_choice == ai_choice:
-        result = "It's a tie!"
+        result = "Seri!"
         session['score']['tie'] += 1
     elif (user_choice == 'Rock' and ai_choice == 'Scissors') or \
          (user_choice == 'Scissors' and ai_choice == 'Paper') or \
          (user_choice == 'Paper' and ai_choice == 'Rock'):
-        result = "You win!"
+        result = "Kamu menang!"
         session['score']['user'] += 1
     else:
-        result = "You lose!"
+        result = "Kamu kalah!"
         session['score']['ai'] += 1
         
     session['score'] = dict(session['score'])

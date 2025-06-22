@@ -85,18 +85,18 @@
                 }
 
                 if (!data.detected || data.detected.length === 0) {
-                  resultElement.textContent = "No objects detected.";
+                  resultElement.textContent = "Tidak ada objek terdeteksi.";
                 } else {
-                  resultElement.textContent = `You choose: ${JSON.stringify(
+                  resultElement.textContent = `Kamu pilih: ${JSON.stringify(
                     data.detected[0]
-                  )} \nAI choose: ${JSON.stringify(
+                  )} \nAI pilih: ${JSON.stringify(
                     data.ai_choice
-                  )} \n Result: ${data.result}`;
+                  )} \n Hasil: ${data.result}`;
                 }
 
                 let scoreBoard = document.getElementById("score-board");
                 if (data.score) {
-                  scoreBoard.textContent = `Score - You: ${data.score.user}, AI: ${data.score.ai}, Tie: ${data.score.tie}`;
+                  scoreBoard.textContent = `Score - Kamu: ${data.score.user}, AI: ${data.score.ai}, Seri: ${data.score.tie}`;
                 }
 
                 console.log(data);

@@ -62,3 +62,16 @@ height: auto;
   color: red;
   z-index: 3;
 }
+
+#score-board {
+  margin: 20px auto 10px auto;
+  padding: 12px 24px;
+  background: #f1f8e9;
+  color: #222;
+  font-size: 1.3em;
+  font-weight: bold;
+  border-radius: 12px;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(60, 60, 60, 0.08);
+  letter-spacing: 1px;
+}
