@@ -30,3 +30,123 @@ Human player will start the playing session by pressing a button. A countdown wi
 ### 100% Report
 - Implemented a scoring feature.
 - Making the appearance better
+
+## Instruction
+1. Download dataset from roboflow
+```python
+from roboflow import Roboflow
+rf = Roboflow(api_key=api_key)
+project = rf.workspace("roboflow-58fyf").project("rock-paper-scissors-sxsw")
+version = project.version(10)
+dataset = version.download("yolov8")
+```
+2. Install libraries
+```python
+pip install opencv-python matplotlib numpy
+```
+3. Train model
+```python
+from ultralytics import YOLO
+
+# Load a pretrained YOLOv8s model
+model = YOLO('yolov8s.pt')  # Small version
+
+# Train the model
+results = model.train(
+    data='rock-paper-scissors-10/data.yaml',
+    epochs=50,
+    batch=16,
+    imgsz=640,
+    device='0',  # '0' for GPU, 'cpu' for CPU
+    name='rps_yolov8n_first_run'
+)
+```
+4. Evaluate model
+```python
+from ultralytics import YOLO
+
+# Load your trained model
+model = YOLO('best.pt')
+
+# Evaluate
+metrics = model.val()  # Will use the validation set from data.yaml
+print(f"mAP@0.5: {metrics.box.map:.3f}")
+print(f"mAP@0.5:0.95: {metrics.box.map75:.3f}")
+```
+5. Run model on camera
+```python
+import cv2
+from ultralytics import YOLO
+
+# Load model
+model = YOLO('best.pt')
+
+# Open webcam
+cap = cv2.VideoCapture(0)
+frame_count = 0  # Initialize frame counter
+
+while cap.isOpened():
+  ret, frame = cap.read()
+  if not ret:
+    break
+  
+  frame_count += 1  # Increment frame counter
+  
+  # Process every 8th frame
+  if frame_count % 4 == 0:
+    # Run inference
+    results = model(frame, conf=0.5)  # confidence threshold of 0.5
+    
+    # Visualize
+    annotated_frame = results[0].plot()
+    cv2.imshow('Rock-Paper-Scissors Detection', annotated_frame)
+  
+  if cv2.waitKey(1) == ord('q'):
+    break
+
+cap.release()
+cv2.destroyAllWindows()
+```
+6. Run model on test pictures
+```python
+import os
+import random
+import matplotlib.pyplot as plt
+from ultralytics import YOLO
+
+# Load model
+model = YOLO('best.pt')
+
+# Get and shuffle test images
+test_dir = 'C:/cv-project/rock-paper-scissors-14/test/images'
+images = [os.path.join(test_dir, f) for f in os.listdir(test_dir) if f.endswith('.jpg')]
+random.shuffle(images)
+
+# Create figure
+plt.figure(figsize=(20, 15))
+
+# Process 4 images
+for idx, img_path in enumerate(images[:4], 1):
+    # Run prediction
+    results = model(img_path, conf=0.5)
+
+    # Get annotated image
+    annotated_img = results[0].plot()[..., ::-1]  # BGR to RGB
+
+    # Add subplot
+    plt.subplot(2, 2, idx)
+    plt.imshow(annotated_img)
+
+    # Add title with detected classes
+    detections = results[0].boxes
+    if len(detections) > 0:
+        class_ids = detections.cls.tolist()
+        conf_scores = detections.conf.tolist()
+        class_names = [results[0].names[int(c)] for c in class_ids]
+        title = ", ".join([f"{n} ({c:.2f})" for n, c in zip(class_names, conf_scores)])
+        plt.title(title)
+    plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+```
