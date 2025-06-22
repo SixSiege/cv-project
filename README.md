@@ -14,6 +14,7 @@ Human player will start the playing session by pressing a button. A countdown wi
 - VS Code
 - Flask
 - Python
+- Ultralytics
 
 ## Progress
 
@@ -25,4 +26,7 @@ Human player will start the playing session by pressing a button. A countdown wi
 ### 75% Report
 - Implement a base code Flask for detecting and classifying image
 - Will implement new features
-- Will fix issue for delayed model initialization
+
+### 100% Report
+- Implemented a scoring feature.
+- Making the appearance better
