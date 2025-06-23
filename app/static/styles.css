@@ -58,8 +58,8 @@ height: auto;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2em;
-  color: red;
+  font-size: 5em;
+  color: black;
   z-index: 3;
 }
 
