@@ -1,5 +1,5 @@
-# Computer Vision Project
-### Rock Paper Scissor Game using YOLOv8 for Object Detection
+# Rock Paper Scissor Game using YOLOv8 for Object Detection
+### A Computer Vision Project  by:
 Name: M. Amar Fauzan
 
 Class: 4 TI D Information Technology
