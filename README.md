@@ -150,3 +150,24 @@ for idx, img_path in enumerate(images[:4], 1):
 plt.tight_layout()
 plt.show()
 ```
+## Instructions (web app)
+1. Create venv
+```
+python -m venv .venv
+```
+2. Enter the new venv
+```powershell
+.venv\Scripts\Activate
+```
+3. Install requirements
+```
+pip install -r requirement.txt
+```
+4. Set flask app
+```
+set FLASK_APP=app
+```
+5. Run flask app (will run with local cert and debug env)
+```
+flask run --debug --cert=adhoc
+```
